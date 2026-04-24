@@ -1,1 +1,73 @@
-.......
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+
+local lp = Players.LocalPlayer
+local playerGui = lp:WaitForChild("PlayerGui")
+
+local sg = Instance.new("ScreenGui")
+sg.Name = "STAN PANEL"
+sg.ResetOnSpawn = false
+sg.IgnoreGuiInset = true
+sg.DisplayOrder = 999
+sg.Parent = CoreGui
+
+local blackFrame = Instance.new("Frame")
+blackFrame.Size = UDim2.new(1, 0, 1, 0)
+blackFrame.Position = UDim2.new(0, 0, 0, 0)
+blackFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+blackFrame.BackgroundTransparency = 1
+blackFrame.BorderSizePixel = 0
+blackFrame.ZIndex = 999
+blackFrame.Parent = sg
+
+local fakeText = Instance.new("TextLabel")
+fakeText.Size = UDim2.new(1, 0, 0, 40)
+fakeText.Position = UDim2.new(0, 0, 0.45, 0)
+fakeText.BackgroundTransparency = 1
+fakeText.Text = "STAN CHEAT LOADING..."
+fakeText.TextColor3 = Color3.fromRGB(0, 255, 120)
+fakeText.TextSize = 18
+fakeText.Font = Enum.Font.GothamBold
+fakeText.TextXAlignment = Enum.TextXAlignment.Center
+fakeText.TextTransparency = 1
+fakeText.ZIndex = 1000
+fakeText.Parent = blackFrame
+
+local subText = Instance.new("TextLabel")
+subText.Size = UDim2.new(1, 0, 0, 24)
+subText.Position = UDim2.new(0, 0, 0.52, 0)
+subText.BackgroundTransparency = 1
+subText.Text = "Please wait..."
+subText.TextColor3 = Color3.fromRGB(180, 180, 180)
+subText.TextSize = 13
+subText.Font = Enum.Font.Gotham
+subText.TextXAlignment = Enum.TextXAlignment.Center
+subText.TextTransparency = 1
+subText.ZIndex = 1000
+subText.Parent = blackFrame
+
+-- Step 1: fade to black
+TweenService:Create(blackFrame, TweenInfo.new(1.2, Enum.EasingStyle.Quart), {
+    BackgroundTransparency = 0
+}):Play()
+
+-- Step 2: show fake admin text
+task.delay(1.4, function()
+    TweenService:Create(fakeText, TweenInfo.new(0.5), {
+        TextTransparency = 0
+    }):Play()
+    TweenService:Create(subText, TweenInfo.new(0.5), {
+        TextTransparency = 0
+    }):Play()
+end)
+
+-- Step 3: fake loading dots animation
+task.delay(1.8, function()
+    local dots = 0
+    while blackFrame and blackFrame.Parent do
+        dots = (dots % 3) + 1
+        subText.Text = "Please wait" .. string.rep(".", dots)
+        task.wait(0.5)
+    end
+end)
